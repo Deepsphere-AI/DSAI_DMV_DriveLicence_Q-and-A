@@ -91,5 +91,5 @@ elif vAR_AI_application == 'Data Driven Q&A':
     DMV_data_conversation_funtion()
 elif vAR_AI_application == 'Policy Q&A (URL)':
     url_pdf_file_conversation()
-elif vAR_AI_application == 'DMV Scenario Scope':
-    DMV_Scenario_scope()
+# elif vAR_AI_application == 'DMV Scenario Scope':
+#     DMV_Scenario_scope()
