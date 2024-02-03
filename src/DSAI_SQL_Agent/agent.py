@@ -3,13 +3,13 @@ from langchain.agents.agent_types import AgentType
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 import os
 from langchain_community.utilities import SQLDatabase
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 import streamlit as st
 from streamlit_chat import message
 
 def SQL_DB_Agent():
     col11,col22,col33 = st.columns((2,8,2))
-    llm = ChatOpenAI(model_name="gpt-4",api_key=os.environ["API_KEY"])
+    llm = ChatOpenAI(model_name="gpt-4",api_key=os.environ["OPENAI_API_KEY"])
     db = SQLDatabase.from_uri("mysql+pymysql://root:01012001@34.30.129.74:3306/DMV_license")
 
     agent_executor = create_sql_agent(

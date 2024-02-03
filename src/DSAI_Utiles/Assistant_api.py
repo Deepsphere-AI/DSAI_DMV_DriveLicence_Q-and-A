@@ -12,7 +12,7 @@ load_dotenv()
 # Openai Assistant API
 def conversation_for_FAQ(user_input,vAR_directory,vAR_num_pages):
     if 'client' not in st.session_state:
-        st.session_state.client = OpenAI(api_key=os.environ["API_KEY"])
+        st.session_state.client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
         st.session_state.file = st.session_state.client.files.create(
             file=open(vAR_directory, "rb"),
             purpose='assistants'
@@ -22,7 +22,7 @@ def conversation_for_FAQ(user_input,vAR_directory,vAR_num_pages):
         instructions=prompt(vAR_num_pages),
         name="DMV_DriveLicence_FAQ",
         tools=[{"type": "retrieval"}],
-        model="gpt-4-1106-preview",
+        model="gpt-4-turbo-preview",
         file_ids=[st.session_state.file.id],
         )
         
@@ -32,39 +32,47 @@ def conversation_for_FAQ(user_input,vAR_directory,vAR_num_pages):
     message = st.session_state.client.beta.threads.messages.create(thread_id=st.session_state.thread.id,role="user",content=user_input,file_ids=[st.session_state.file.id])
     run = st.session_state.client.beta.threads.runs.create(thread_id=st.session_state.thread.id,assistant_id=st.session_state.assistant.id)
     # run = client.beta.threads.runs.create(thread_id=thread.id,assistant_id=assistant.id,run_id=run.id)
-    
+    a = 0
     while True:
         run = st.session_state.client.beta.threads.runs.retrieve(thread_id=st.session_state.thread.id, run_id=run.id)
+        time.sleep(2)
+        print(run.status)
+        a = a+1
+        print(a)
         if run.status=="completed":
             messages = st.session_state.client.beta.threads.messages.list(thread_id=st.session_state.thread.id)
             latest_message = messages.data[0]
             text = latest_message.content[0].text.value
-            break     
-    return text
+            return text
 
 
 # Openai Assistant API
 def conversation_for_data(user_input):
     if 'client' not in st.session_state:
-        st.session_state.client = OpenAI(api_key=os.environ["API_KEY"])
+        st.session_state.client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
         st.session_state.thread = st.session_state.client.beta.threads.create()
     message = st.session_state.client.beta.threads.messages.create(thread_id=st.session_state.thread.id,role="user",content=user_input)
     run = st.session_state.client.beta.threads.runs.create(thread_id=st.session_state.thread.id,assistant_id=os.environ["DMV_DriveLicence_Chatbot"])
     # run = client.beta.threads.runs.create(thread_id=thread.id,assistant_id=assistant.id,run_id=run.id)
-    
+    a = 0
     while True:
         run = st.session_state.client.beta.threads.runs.retrieve(thread_id=st.session_state.thread.id, run_id=run.id)
+        time.sleep(2)
+        print(run.status)
+        a = a+1
+        print(a)
         if run.status=="completed":
             messages = st.session_state.client.beta.threads.messages.list(thread_id=st.session_state.thread.id)
             latest_message = messages.data[0]
             text = latest_message.content[0].text.value
-            break     
-    return text
+            return text
+         
+    
 
 
 def DMV_scenario_scope_chatbot(user_input):
     if 'client' not in st.session_state:
-        st.session_state.client = OpenAI(api_key=os.environ["API_KEY"])
+        st.session_state.client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
         st.session_state.thread = st.session_state.client.beta.threads.create()
     message = st.session_state.client.beta.threads.messages.create(thread_id=st.session_state.thread.id,role="user",content=user_input)
     run = st.session_state.client.beta.threads.runs.create(thread_id=st.session_state.thread.id,assistant_id=os.environ["DMV_Scenario_Scope"])
@@ -87,7 +95,6 @@ def DMV_scenario_scope_chatbot(user_input):
                 role = msg.role
                 content = msg.content[0].text.value
                 print(f"{role.capitalize()}: {content}")
-
                 return content
         elif run_status.status == 'requires_action':
                 print("Function Calling")

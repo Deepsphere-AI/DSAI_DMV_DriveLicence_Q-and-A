@@ -6,9 +6,10 @@ import os
 from src.DSAI_SQL_Agent.agent import SQL_DB_Agent
 from src.DSAI_Drivelicence_DataChatbot.data_conversation import DMV_data_conversation_funtion
 from src.DSAI_FAQ_Chatbot.PDF_faq_conversation import main_DMV_app_funtion
-from src.DSAI_PDF_File_URL_Conversation.URL_Pdf_file_conversation import url_pdf_file_conversation
+# from src.DSAI_FAQ_Chatbot.pdf_Q_A_Conversation import DMV_Q_A_Conversation_funtion
+from src.DSAI_PDF_File_URL_Conversation.pdf_file_conversation_GCP import url_pdf_file_conversation
 from src.DSAI_DMV_Scenarios_Scope.DMV_scenario import DMV_Scenario_scope
-
+from src.DSAI_DMV_General.generalQ_A import general_based_url_conversation
 
 # Set the page configuration
 
@@ -58,7 +59,7 @@ st.markdown("<hr style=height:2.5px;margin-top:0px;width:100%;background-color:g
 #---------Side bar-------#
 with st.sidebar:
     st.markdown("<p style='text-align: center; color: white; font-size:25px;'><span style='font-weight: bold; font-family: century-gothic';></span>Solutions Scope</p>", unsafe_allow_html=True)
-    vAR_AI_application = st.selectbox("",['Select Application','Data Driven Q&A','Job Aid Q&A (File)','Policy Q&A (URL)','Transactional Q&A (Database)','DMV Scenario Scope'],key='application')
+    vAR_AI_application = st.selectbox("",['Select Application','Data Driven Q&A','Job Aid Q&A (File)','Policy Q&A (URL)','Transactional Q&A (Database)',"General Q&A",'DMV Scenario Scope'],key='application')
     
     # selected = st.selectbox("",['User',"Logout"],key='text')
     vAR_LLM_model = st.selectbox("",['LLM Models',"gpt-3.5-turbo-16k-0613","gpt-4-0314","gpt-3.5-turbo-16k","gpt-3.5-turbo-1106","gpt-4-0613","gpt-4-0314"],key='text_llmmodel')
@@ -91,5 +92,7 @@ elif vAR_AI_application == 'Data Driven Q&A':
     DMV_data_conversation_funtion()
 elif vAR_AI_application == 'Policy Q&A (URL)':
     url_pdf_file_conversation()
-
-    
+elif vAR_AI_application == 'DMV Scenario Scope':
+    DMV_Scenario_scope()
+elif vAR_AI_application == 'General Q&A':
+    general_based_url_conversation()

@@ -6,7 +6,7 @@ from langchain_community.utilities import SQLDatabase
 from langchain.chat_models import ChatOpenAI
 
 def SQL_agent_calling(vAR_qestion):
-    llm = ChatOpenAI(model_name="gpt-4",api_key=os.environ["API_KEY"])
+    llm = ChatOpenAI(model_name="gpt-4",api_key=os.environ["OPENAI_API_KEY"])
     db = SQLDatabase.from_uri("mysql+pymysql://root:01012001@34.30.129.74:3306/DMV_license")
 
     agent_executor = create_sql_agent(
